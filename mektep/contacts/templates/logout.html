@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Вы вышли с аккаунта</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      {% load static %}
+      <link rel="icon" type="image/x-icon" href="{% static 'img/logo.png'%}">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Вы вышли с аккаунта!</h2>
+        <a href="{% url 'login'%}"><button class="btn btn-success">Нажмите сюда чтобы зайти снова</button><br/></a><br/>
+        
+        <a href="{% url 'index'%}"><button class="btn-primary btn">Главная страница</button></a><br/>
+    </div>
+</body>
+</html>

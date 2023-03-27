@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load lo %}
+<head>
+    <meta charset="UTF-8">
+    
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'img/logo.png'%}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" >
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+
+    <title>Профиль</title>
+</head>
+
+<body>
+
+
+    <!-------------------------------NAvigation Starts------------------>
+
+    <nav class="navbar navbar-expand-md navbar-dark mb-4" style="padding: 1rem; background-color:#3097D1">
+        <a href="/" class="navbar-brand">
+            {% load static %}
+            <img src="{% static 'img/logo.png' %}" alt="logo" class="img-fluid" width="80px" height="100px"></a>
+
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#responsive"><span
+                class="navbar-toggler-icon"></span></button>
+
+
+        <div class="collapse navbar-collapse" id="responsive">
+            <ul class="navbar-nav me-auto text-capitalize">
+
+            
+                
+                <li class="nav-item"><a href="/" class="nav-link">home</a></li>
+                <li class="nav-item"><a href="/about" class="nav-link">О нас</a></li>
+
+                <li class="nav-item"><a href="{% if user.pk %} /profile/{{user.pk}} {% else %} /accounts/login {% endif %}" class="active nav-link">Профиль</a></li>
+                <li class="nav-item"><a href="/postadd" class="nav-link">Добавить пост</a></li>
+            </ul>
+
+      
+            {% if user.pk %}
+            <a href="/profile/{{user.pk}}">
+                {% if user.face %}
+
+                <img src="/media/{{ user.face }}" alt="" class="rounded-circle ml-3 d-md-block" width="32px"
+                    height="32px">
+                {% else %}
+                {% load static %}
+                <img src="{% static 'img/whoami.png' %}" alt="" class="rounded-circle ml-3  d-md-block"
+                    width="32px" height="32px">
+            </a>
+            {% endif %}
+            </a>  
+            <a style="margin-left: 5px;" href="{% url 'logout_page' %}">
+                {% load static %}
+                <img style="width: 25px; height: 25px;" src="{% static 'img/exit.png' %}" alt="Выйти"/>
+            </a>    
+
+        {% else %}
+        <a style="margin-left: 5px;" href="{% url 'login' %}">
+            {% load static %}
+            <img style="width: 25px; height: 25px;" src="{% static 'img/login.png' %}" alt="Войти"/>
+        </a> 
+        {% endif %}
+
+
+        </div>
+
+
+
+
+
+    </nav>
+
+    <!---------------------------------------------Ends navigation------------------------------>
+
+    <!---------------------------MOdal Section  satrts------------------->
+    <!-------------------------------------------Start Grids layout for lg-xl-3 columns and (xs-lg 1 columns)--------------------------------->
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-4 mb-sm-5">
+                <div class="card card-style1 border-0">
+                    <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
+                        <div class="row align-items-center">
+                            {% if userp.face %}
+                            <div class="col-lg-6 mb-4 mb-lg-0"> <img class="img-fluid img-thumbnail" src="/media/{{ userp.face }}" alt="..."></div>
+                            {% else %}
+                            {% load static %}
+                            <div class="col-lg-6 mb-4 mb-lg-0"> <img class="img-fluid img-thumbnail" src="{% static 'img/whoami.png' %}" alt="..."></div>
+                        {% endif %}
+                            <div class="col-lg-6 px-xl-10">
+                                <div class="bg-secondary d-lg-inline-block py-1-9 p-2 px-1-9 px-sm-6 mb-1-9 rounded">
+                                    <h3 class="h2 text-white mb-0">{{ userp.first_name }} {{ userp.last_name }}</h3> <span
+                                        class="text-primary">{{userp.username}}</span>
+                                </div>
+                                <ul class="list-unstyled mb-1-9">
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">Пол:</span>
+                                        {{userp.gender}}</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">Эл.
+                                            почта:</span>{{userp.email}}</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">Дата рож.:</span>
+                                        {% if userp.birthday %}{{userp.birthday}}{% else %}Не указан{% endif  %}</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">Геолокация:</span>
+                                        {% if userp.city %}{{userp.city}}{% else %}Не указан{% endif %}{% if userp.country %},{{userp.country}} {% else %},Не указан{% endif%}</li>
+                                    <li class="display-28"><span
+                                            class="display-26 text-secondary me-2 font-weight-600">Дата
+                                            регистрации:</span> {{userp.reg_data}} </li>
+                                            {% if edit %}
+                                            <li class="display-28"><a href="/profile/{{userp.pk}}/edit"><button>Изменить</button></a> </li>
+                                            {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 mb-4 mb-sm-5">
+                <div> <span class="section-title text-primary mb-3 mb-sm-4">Про меня</span>
+                    {% if userp.interes %}
+                    <p>{{userp.interes}}</p>
+                    {% else %}
+                    <p>Пока что ничего нет</p>
+                    {% endif %}
+                </div>
+            </div>
+{% if posts %}
+            <div class="col-12 col-lg-6">
+
+
+                <div class="middle-column">
+
+
+                    <div class="card">
+
+
+
+                        {% for post in posts %}
+                        <a href="/post/{{post.pk}}">
+                        <div class="card-body">
+                            <div style="display: block;">
+                                {% if post.author.face %}
+                                <img src="/media/{{ post.author.face }}" alt="img" width="55px" height="55px"
+                                    class="rounded-circle mr-3">
+                                {% else %}
+                                {% load static %}
+                                <img src="{% static 'img/whoami.png' %}" alt="img" width="55px" height="55px"
+                                    class="rounded-circle mr-3">
+                                {% endif %}
+                                <div class="media-body">
+
+                                    <h5>{{ post.author.username }} </h5>
+                                    <p class="card-text text-justify">{{ post.text | markdown | safe }}</p>
+
+
+
+                                    <div class="row no-gutters mb-3">
+                                        <div class="p-1 text-center">
+
+                                            <img src="/media/{{ post.images.all.0.img }}" alt=""
+                                                class="img-fluid img-thumbnail"><br>
+                                            <img src="/media/{{ post.images.all.1.img }}" alt=""
+                                                class="img-fluid img-thumbnail">
+
+
+                                        </div>
+
+                                        <div class=" p-1 text-center">
+                                            {% if post.images.all.2.img %}
+                                            <img src="/media/{{ post.images.all.2.img }}" alt="" class="img-fluid mb-2">
+                                            {% endif %}
+                                            {% if post.images.all.3.img %}
+                                            <img src="/media/{{ post.images.all.3.img }}" alt="" class="img-fluid">
+                                            {% endif %}
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <small>{{ post.public_data }}</small>
+
+
+                            </div>
+
+
+
+
+
+                        </div>
+                    </a>
+
+
+                        {% endfor %}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+
+{% endif %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    </body>
+
+</html>
